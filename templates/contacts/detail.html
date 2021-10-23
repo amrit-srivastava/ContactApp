@@ -1,0 +1,25 @@
+{% extends "contacts/base.html" %}
+
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+    <div class="container">
+        
+        <div class="navbar-nav">
+            
+            <a class="nav-item nav-link" href="{{obj.get_absolute_url1}}">Update</a>
+            <a class="nav-item nav-link" href="{{obj.get_absolute_url2}}">Delete</a>
+            
+        </div>
+        
+    </div>
+</nav>
+    {{obj.firstName}} {{obj.lastName}}
+    <br>
+    {{obj.contactNumber}}
+    <br>
+    {{obj.email}}
+    <br>
+    {{obj.address}}
+    <br>
+{% endblock content %}
+    

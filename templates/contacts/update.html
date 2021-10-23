@@ -1,0 +1,12 @@
+{% extends 'contacts/base.html' %}
+{% block content %}
+<form  method ='POST'>{% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Save">
+
+
+</form>
+
+<a href="{% url 'list-view'%}">Go Back to Contact List</a>
+
+{% endblock content %}

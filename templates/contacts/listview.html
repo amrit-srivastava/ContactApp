@@ -1,0 +1,56 @@
+{% extends "contacts/base.html" %}
+
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+    <div class="container">
+        
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{% url 'add-view' %}">Add Contact</a>
+            {% comment %} <a class="nav-item nav-link" href="#">Search Contact</a> {% endcomment %}
+        </div>
+        
+    </div>
+    <form method = POST action="{% url 'search-view' %}"> {% csrf_token %}
+        <input type="search" placeholder ='Search By Name' name= 'searched'>
+        <button type="submit">Search</button>
+        
+    
+    
+    
+    
+    </form>
+</nav>
+    {% for obj in page_obj%}
+        <p> 
+         <a href="{{obj.get_absolute_url}}"> {{obj.firstName}} {{obj.contactNumber}}  </a>
+        </p>
+        
+        <br>
+    {% endfor %}
+{% comment %} {% for Contacts in page_obj %}
+    {# Each "contact" is a Contact model object. #}
+    {{ contact.full_name|upper }}<br>
+    ...
+{% endfor %} {% endcomment %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+
+{% endblock content %} 
+    
