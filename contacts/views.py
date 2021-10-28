@@ -1,7 +1,14 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
+from django.shortcuts import render, reverse
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    DetailView,
+    DeleteView,
+)
 from contacts.forms import AddContactForm
 from .models import Contacts
+from django.urls import reverse_lazy
 
 
 class ContactListView(ListView):
@@ -9,59 +16,39 @@ class ContactListView(ListView):
     model = Contacts
     template_name = "contacts/listview.html"
     ordering = ["firstName"]
+
+    def get_queryset(self):
+        searched = self.request.GET.get("searched")
+        if searched:
+            return Contacts.objects.filter(firstName__icontains=searched)
+        return Contacts.objects.all()
+
+
+class ContactCreateView(CreateView):
+    template_name = "contacts/add.html"
+    form_class = AddContactForm
+    success_url = reverse_lazy("contacts:list-view")
+
+
+class ContactUpdateView(UpdateView):
+    form_class = AddContactForm
     queryset = Contacts.objects.all()
+    template_name = "contacts/update.html"
+
+    def get_success_url(self):
+        pk = self.kwargs.get("pk")
+
+        return reverse("contacts:detail-view", kwargs={"pk": pk})
 
 
-def contactHomeView(request):
-    return render(request, "contacts/home.html", {})
+class ContactDetailView(DetailView):
+    model = Contacts
+    template_name = "contacts/detail.html"
+    context_object_name = "obj"
 
 
-def contactCreateView(request):
-    form = AddContactForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        form = AddContactForm()
-
-    context = {"form": form}
-    return render(request, "contacts/add.html", context)
-
-
-def contactUpdateView(request, id):
-    obj = Contacts.objects.get(id=id)
-    form = AddContactForm(request.POST or None, instance=obj)
-    if form.is_valid():
-        form.save()
-        form = AddContactForm()
-
-    context = {"form": form}
-    return render(request, "contacts/update.html", context)
-
-
-def ContactDetailView(request, id):
-    obj = Contacts.objects.get(id=id)
-    context = {"obj": obj}
-
-    return render(request, "contacts/detail.html", context)
-
-
-def ContactDeleteView(request, id):
-    obj = get_object_or_404(Contacts, id=id)
-    if request.method == "POST":
-        obj.delete()
-        return redirect("http://127.0.0.1:8000/contacts/")
-
-    context = {"obj": obj}
-
-    return render(request, "contacts/delete.html", context)
-
-
-def contactSearchView(request):
-    if request.method == "POST":
-        searched = request.POST["searched"]
-        contact = Contacts.objects.filter(firstName__contains=searched)
-        return render(
-            request, "contacts/search.html", {"searched": searched, "contact": contact}
-        )
-
-    else:
-        return render(request, "contacts/search.html", {})
+class ContactDeleteView(DeleteView):
+    model = Contacts
+    context_object_name = "obj"
+    template_name = "contacts/delete.html"
+    success_url = reverse_lazy("contacts:list-view")

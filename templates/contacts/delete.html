@@ -3,14 +3,6 @@
 <form  method ='POST'>{% csrf_token %}
     <h1>Do you want to delete contact "{{obj.firstName}}"?</h1>
     <input type="submit" value="Yes"> 
-        <a href="{% url 'list-view' %}"> Cancel</a>
+        <a href="{% url 'contacts:detail-view' obj.id %}"> Cancel</a>
 </form>
-    
-
-    
-
-
-
-
-
 {% endblock content %}

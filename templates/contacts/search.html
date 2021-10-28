@@ -1,34 +1,23 @@
 {% extends 'contacts/base.html' %}
 {% block content %}
-
-<center>
-   
+<center>   
     {% if searched %}
         <h1>
         You searched for {{searched}}
+        </h1>
         <br>
         {% for con in contact %}
-            {{con}}
+            {{con.firstName}}
+            {{con.lastName}}
+            {{con.contactNumber}}
+            {{con.email}}
+            {{con.address}}
             <br>
-            
-
-        
         {% endfor %}
-        
-        </h1>
     {% else %} 
         <h1>
-        You did not search for anything !
-        
-        </h1>  
-        
-        
+        You did not search for anything !        
+        </h1>        
     {% endif %}
-    
-    
-
 </center>
-
-
-
 {% endblock content %}

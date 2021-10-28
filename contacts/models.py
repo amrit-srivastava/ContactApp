@@ -10,13 +10,13 @@ class Contacts(models.Model):
     address = models.CharField(max_length=50)
 
     def get_absolute_url(self):
-        return reverse("detail-view", kwargs={"id": self.id})
+        return reverse("contacts:detail-view", kwargs={"pk": self.id})
 
-    def get_absolute_url1(self):
-        return reverse("update-view", kwargs={"id": self.id})
+    def get_update_url(self):
+        return reverse("contacts:update-view", kwargs={"pk": self.id})
 
-    def get_absolute_url2(self):
-        return reverse("delete-view", kwargs={"id": self.id})
+    def get_delete_url(self):
+        return reverse("contacts:delete-view", kwargs={"pk": self.id})
 
     def __str__(self):
-        return f"{self.firstName} {self.lastName} {self.contactNumber} {self.email} {self.address}"
+        return f"{self.firstName}"
