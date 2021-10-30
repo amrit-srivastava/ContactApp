@@ -1,1 +1,1 @@
-web: contactsapp.wsgi
+web: contactapp.wsgi
