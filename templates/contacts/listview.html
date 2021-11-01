@@ -1,5 +1,6 @@
 {% extends "contacts/base.html" %}
 {% block content %}
+<h1>Welcome {{user.first_name}}</h1>
 <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
     <div class="container">
         
@@ -37,5 +38,8 @@
             {% endif %}
         </span>
     </div>
+<nav>
+<a href="{% url "user:logout"%}">Logout</a>
+</nav>
 {% endblock content %} 
     

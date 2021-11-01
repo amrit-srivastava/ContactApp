@@ -1,0 +1,28 @@
+{% extends 'contacts/base.html' %}
+{% block content %}
+<div>
+    <form  method ='POST'>
+        {% csrf_token %}
+        <fieldset>
+            <legend>Log in Now</legend>
+            {{form.as_p}}
+        </fieldset>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+    <div>
+        <small>
+            Do you need a account? <a href="{% url 'user:register' %}">Sign Up</a>
+        </small>
+    
+    
+    </div>
+   
+
+
+
+
+</div>
+
+{% endblock content %}

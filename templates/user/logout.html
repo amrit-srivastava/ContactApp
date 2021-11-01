@@ -1,0 +1,19 @@
+{% extends 'contacts/base.html' %}
+{% block content %}
+    <h1>You have been logged out</h1>
+    <div>
+        <small>
+            Log in again? <a href="{% url 'user:login' %}">Log In</a>
+            <br>
+            Need an account?<a href="{% url "user:register"%}">Sign Up</a>
+        </small>
+
+    
+    </div>
+   
+
+
+
+
+
+{% endblock content %}

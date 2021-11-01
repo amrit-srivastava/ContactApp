@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import reverse, redirect
 from django.views.generic import (
     ListView,
     CreateView,
@@ -20,14 +20,24 @@ class ContactListView(ListView):
     def get_queryset(self):
         searched = self.request.GET.get("searched")
         if searched:
-            return Contacts.objects.filter(firstName__icontains=searched)
-        return Contacts.objects.all()
+            return Contacts.objects.filter(
+                user=self.request.user, firstName__icontains=searched
+            )
+        return Contacts.objects.filter(user=self.request.user)
 
 
 class ContactCreateView(CreateView):
     template_name = "contacts/add.html"
     form_class = AddContactForm
     success_url = reverse_lazy("contacts:list-view")
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.user = request.user
+            contact.save()
+        return redirect(reverse("contacts:list-view"))
 
 
 class ContactUpdateView(UpdateView):
