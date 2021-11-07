@@ -21,8 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get("CONTACTSAPP_SECRET_KEY")
-SECRET_KEY = "riu-aa*3cdls)e4vfz6mc4h^_74q@85nv4hkmn@f$=&%095*=0"
+SECRET_KEY = os.environ.get("CONTACTSAPP_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "contacts",
     "user",
+    "rest_framework",
+    # "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,13 @@ STATIC_URL = "/static/"
 LOGIN_REDIRECT_URL = "contacts:list-view"
 
 django_heroku.settings(locals())
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+}
